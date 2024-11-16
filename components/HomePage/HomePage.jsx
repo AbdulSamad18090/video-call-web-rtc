@@ -17,7 +17,7 @@ export default function HomePage() {
   };
 
   const initialize = () => {
-    const newSocket = io("http://localhost:4000");
+    const newSocket = io("https://simplistic-zigzag-may.glitch.me/");
     setSocket(newSocket);
 
     const pc = new RTCPeerConnection(servers);
@@ -33,10 +33,12 @@ export default function HomePage() {
       remoteVideoRef.current.srcObject = event.streams[0];
     };
 
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-      localVideoRef.current.srcObject = stream;
-      stream.getTracks().forEach((track) => pc.addTrack(track, stream));
-    });
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        localVideoRef.current.srcObject = stream;
+        stream.getTracks().forEach((track) => pc.addTrack(track, stream));
+      });
 
     newSocket.on("offer", async (offer) => {
       await pc.setRemoteDescription(new RTCSessionDescription(offer));
@@ -93,7 +95,9 @@ export default function HomePage() {
             autoPlay
             className="w-full h-64 object-cover"
           />
-          <p className="text-center text-white bg-gray-800 py-2">Remote Video</p>
+          <p className="text-center text-white bg-gray-800 py-2">
+            Remote Video
+          </p>
         </div>
       </div>
     </div>
